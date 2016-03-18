@@ -11,9 +11,6 @@ cols = ["Institution Description", "Appointment Year", "Appointment Quarter", "A
         "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
         "Attending Doctor Department Code"]
 
-# wanted_cols = [5, 6 , 8, 15, 16, 17, 18, 19, 20, 21] 
-# for col in wanted_cols:
-#     c_cols[cols[col]] = col
 c_cols = {}
 for i, v in enumerate(cols):
     c_cols[v] = i
@@ -64,7 +61,7 @@ def parse_data(filename, tokens):
 
 mapping = read_mapping()
 
-files = ['csv/quarter1.csv']
+files = ['csv/quarter%s.csv' % i for i in range(1,5,1)]
 with open('out.csv', 'w') as f:
     for input_file in files:
         data = parse_data(input_file, mapping)
