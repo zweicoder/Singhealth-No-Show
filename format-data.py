@@ -48,28 +48,34 @@ def extract(raw, tokens):
     # apmt duration from start time - end time
 
     # label
-    label = classify(raw[c_cols["Visit Status Code"]], tokens)
+    label = 1 if classify(raw[c_cols["Visit Status Code"]], tokens) == 2 else 0
     return label, features, categories + ["Appointment Waiting Time (days)"]
 
 
 def parse_data(filename, tokens):
     parsed = []
+    label_list = []
     with open(filename, 'rb') as f:
         for line in f:
             raw = line.strip().split(',')  # Get data from appointment time onwards
             label, features, categories = extract(raw, tokens)
-            formatted = str(label) + ' ' + ' '.join(['%s:%s' % (idx, feature) for idx, feature in enumerate(features)])
+            formatted =','.join(['%s' % (feature) for feature in features])
+            label_list.append(label)
             parsed.append(formatted)
-    return parsed
+    return parsed,label_list
 
 
 mapping = read_mapping()
 
-files = ['csv/quarter%s.csv' % i for i in range(1,4,1)]
-# files = ['csv/quarter3.csv']
-with open('out', 'w') as f:
-    for input_file in files:
-        print 'Parsing %s...' % input_file
-        data = parse_data(input_file, mapping)
-        for d in data:
-            f.write(d + '\n')
+files = ['csv/quarter%s.csv' % i for i in range(3,4,1)]
+#files = ['csv/quarter4.csv']
+with open('xtrain3.txt', 'w') as f:
+    with open('ytrain3.txt','w') as f2:
+        for input_file in files:
+            print 'Parsing %s...' % input_file
+            data,label = parse_data(input_file, mapping)
+            for d in data:
+                f.write(d + '\n')
+            for l in label:
+                f2.write(str(l) + '\n')
+    
