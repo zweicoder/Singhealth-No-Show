@@ -36,6 +36,11 @@ def update_file():
                 if aid in hashmap:
                     data.append([aid, hashmap[aid] , raw[c_cols["Appointment Date"]] , raw[c_cols["Visit Status Code"]]])    
     data = sorted(data, key=operator.itemgetter(1, 2))
+    
+#    with open('csv/pid.csv','w') as f:    
+#        for d in data:
+#            f.write(d[0]+","+d[1]+","+d[2]+","+d[3]+"\n")
+#    
     patient = ""
     first = -1
     wrong_aid = set()
@@ -43,11 +48,16 @@ def update_file():
         if data[i][1]!=patient:
             patient=data[i][1]
             first = i
-        if data[i][3] == "NS":
+        if data[i][3] == "NS" or data[i][3] == "EXPUNKNOWN":
             for j in range(first,i):
                 if data[j][2] == data[i][2] and data[j][3] == "A":
                     wrong_aid.add(data[i][0])
+                    break
     
+#    with open('wrong_aid.txt','w') as f:
+#        for id in wrong_aid:
+#            f.write(id+" ")
+        
     for i in range(len(files)):
         with open(files[i],'rb') as f1:
             with open(newfiles[i],'w') as f2:
@@ -55,11 +65,12 @@ def update_file():
                     raw = line.strip()
                     row = raw.split(',')
                     aid = row[c_cols["eHIntS Appointment Id"]]
-                    if aid not in wrong_aid:
-                        f2.write(raw+"\n")
-                    else:
+                    status = row[c_cols["Visit Status Code"]]
+                    if aid in wrong_aid:
                         row[c_cols["Visit Status Code"]] = "A"
                         f2.write(','.join(row)+"\n")
+                    elif status != "EXPUNKNOWN":
+                        f2.write(raw+"\n")
                     
 
 update_file()
