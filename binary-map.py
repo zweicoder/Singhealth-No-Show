@@ -23,22 +23,14 @@ def getBinaryMap(files):
         mapping[token] = 0
 
     # Map integer code to classes/categories specified in glossary
-    idx=1
-    for i in range(11):
-        filename = 'csv/glossary-%s.csv'%i
-        print('Parsing mapping from %s'%filename)
-        with open(filename, 'rb') as f:
-            for line in f:
-                col = line.strip().split(',')[1].lower()
-                if not col in mapping:
-                    mapping[col] = idx
-                    idx+=1
     # For each data file, find the columns we're gonna classify and make mappings for unseen values
-    categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
-                  "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
-                  "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
-                  "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
-                  "Attending Doctor Department Code"]
+    # categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
+    #               "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
+    #               "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
+    #               "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
+    #               "Attending Doctor Department Code"]
+    idx=1
+    categories = ['Referral Source Code','Attending Doctor Rank','Appointment Type Code']
     for filename in files:
         print('Parsing mapping from %s'%filename)
         with open(filename,'rb') as f:
