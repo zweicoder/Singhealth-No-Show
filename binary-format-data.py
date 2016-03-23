@@ -28,19 +28,21 @@ def classify(code, tokens):
 
 
 # Return list of extracted values
-def extract(raw, tokens):
-    categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
-                  "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
-                  "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
-                  "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
-                  "Attending Doctor Department Code"]
+def extract(raw, tokens, length):
+    # categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
+    #               "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
+    #               "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
+    #               "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
+    #               "Attending Doctor Department Code"]
+    categories = ['Referral Source Code','Attending Doctor Rank','Appointment Type Code']
 
-    features = [0] * len(tokens.keys())
+    features = [0] * length
     # Get all qualitative features from categories we are interested in
     for cat in categories:
         col_idx = c_cols[cat]
         # column index -> raw data for column -> feature index for that category
-        feature_index = tokens[raw[col_idx]]
+        col_val = raw[col_idx].lower()
+        feature_index = tokens[col_val]
         features[feature_index] = 1
 
     # Solve for some quantitative features here
@@ -57,10 +59,11 @@ def extract(raw, tokens):
 def parse_data(filename, tokens):
     parsed = []
     label_list = []
+    length = len(tokens.keys())
     with open(filename, 'rb') as f:
         for line in f:
             raw = line.strip().split(',')  # Get data from appointment time onwards
-            label, features = extract(raw, tokens)
+            label, features = extract(raw, tokens, length)
             formatted =','.join(['%s' % (feature) for feature in features])
             label_list.append(label)
             parsed.append(formatted)
