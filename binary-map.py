@@ -13,7 +13,7 @@ for each value get from the mapping its index and set to 1
 """
 def getBinaryMap(files):
     mapping = {}
-    cols = ["Institution Description", "Appointment Year", "Appointment Quarter", "Appointment Month", "Appointment Week Name", "Appointment Date", "Appointment Time", "eHIntS Appointment Id", "Appointment Created Date", "Rescheduled Date","Rescheduled Time", "Appointment Rescheduled Reason Code", "Session Start Time", "Session End Time", "Appointment Type Duration", "Specialty Code", "Department Code", "Appointment Type Code", "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Visit Status Code", "Date of Birth", "Gender","Race", "Nationality", "Marital Status", "Postal Code", "Patient Class Code", "Pioneer Indicator","Overbook Indicator", "No Show Count","Actual Turn Up Count","Appointment Movement Count","Appointment Waiting Time (days)","Attending Doctor Rank","Attending Doctor Department Summary (NDCS Only)","Attending Doctor Unit (NDCS Only)","Attending Doctor Department Code"]
+    cols = ["Institution Description", "Appointment Week Name", "Appointment Date", "Appointment Time", "eHIntS Appointment Id", "Appointment Created Date", "Rescheduled Date","Rescheduled Time", "Appointment Rescheduled Reason Code", "Session Start Time", "Session End Time", "Appointment Type Duration", "Specialty Code", "Department Code", "Appointment Type Code", "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Visit Status Code", "Date of Birth", "Gender","Race", "Nationality", "Marital Status", "Postal Code", "Patient Class Code", "Pioneer Indicator","Overbook Indicator", "No Show Count","Actual Turn Up Count","Appointment Movement Count","Appointment Waiting Time (days)","Attending Doctor Rank","Attending Doctor Department Summary (NDCS Only)","Attending Doctor Unit (NDCS Only)","Attending Doctor Department Code"]
 
     c_cols = {}
     for i, v in enumerate(cols):
@@ -24,13 +24,13 @@ def getBinaryMap(files):
 
     # Map integer code to classes/categories specified in glossary
     # For each data file, find the columns we're gonna classify and make mappings for unseen values
-    # categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
-    #               "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
-    #               "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
-    #               "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
-    #               "Attending Doctor Department Code"]
+    categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
+                   "Referral Source Code", "Referral Healthcare Facility Code", "Visit Type Code", "Gender", "Race",
+                   "Nationality", "Marital Status", "Patient Class Code", "Attending Doctor Rank",
+                   "Attending Doctor Department Summary (NDCS Only)", "Attending Doctor Unit (NDCS Only)",
+                   "Attending Doctor Department Code"]
     idx=1
-    categories = ['Referral Source Code','Attending Doctor Rank','Appointment Type Code']
+#    categories = ['Referral Source Code','Attending Doctor Rank','Appointment Type Code','Patient Class Code']
     for filename in files:
         print('Parsing mapping from %s'%filename)
         with open(filename,'rb') as f:
