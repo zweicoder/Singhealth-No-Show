@@ -42,8 +42,8 @@ def extract(raw, tokens):
         features.append(classify(raw[col_idx], tokens))
 
     # Solve for some quantitative features here
-    apmt_delay = int(float(raw[c_cols["Appointment Waiting Time (days)"]]))
-    features.append(apmt_delay)
+    # apmt_delay = int(float(raw[c_cols["Appointment Waiting Time (days)"]]))
+    # features.append(apmt_delay)
     # parse dob for age using regex - 2016
     # apmt duration from start time - end time
 
@@ -67,10 +67,10 @@ def parse_data(filename, tokens):
 
 mapping = read_mapping()
 
-files = ['csv/quarter%s.csv' % i for i in range(3,4,1)]
+files = ['csv/cleaned/quarter%s.csv' % i for i in range(1,5,1)]
 #files = ['csv/quarter4.csv']
-with open('xtrain3.txt', 'w') as f:
-    with open('ytrain3.txt','w') as f2:
+with open('xtrain.txt', 'w') as f:
+    with open('ytrain.txt','w') as f2:
         for input_file in files:
             print 'Parsing %s...' % input_file
             data,label = parse_data(input_file, mapping)
