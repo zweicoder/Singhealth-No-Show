@@ -1,0 +1,1 @@
+{'Age': 21.823149495854782, 'Appointment Waiting Time (days)': 59.682719529928136}

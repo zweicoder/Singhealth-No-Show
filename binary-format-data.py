@@ -139,7 +139,7 @@ def parse_data(filename, tokens):
 
 
 mapping = read_mapping()
-# all_used_columns = mapping.keys() + ["Appointment Waiting Time (days)", "Age", "Duration"]
+# all_used_columns = mapping.keys() + ["Appointment Date","Appointment Time","Appointment Waiting Time (days)", "Age", "PastNS"]
 # print 'Variables are: %s'% (all_used_columns)
 
 with open('xtrain.txt', 'w') as f:

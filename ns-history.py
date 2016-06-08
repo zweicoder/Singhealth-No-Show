@@ -1,4 +1,4 @@
-cols = ["Institution Description",
+cols = ["Institution Description", "1","2","3",
         "Appointment Week Name", "Appointment Date", "Appointment Time", "eHIntS Appointment Id",
         "Appointment Created Date", "Rescheduled Date", "Rescheduled Time", "Appointment Rescheduled Reason Code",
         "Session Start Time", "Session End Time", "Appointment Type Duration", "Specialty Code", "Department Code",
@@ -36,17 +36,22 @@ def get_aid_pid_map():
     return hashmap
 
 
-files = ['csv/cleaned/quarter%s.csv' % i for i in range(1,5,1)]
-newfiles = ['csv/nshistory/quarter%s.csv' % i for i in range(1,5,1)]
+files = ['csv/really-cleaned/quarter%s.csv' % i for i in range(1,5,1)]
+newfiles = ['csv/weizhi/quarter%s.csv' % i for i in range(1,5,1)]
 aidPidMap = get_aid_pid_map()
 nsHistory = get_nsmap()
+# print aidPidMap
+# print nsHistory
 data = []
 for i in range(len(files)):
     with open(files[i],'rb') as infile:
         with open(newfiles[i],'w') as outfile:
             for line in infile:
                 raw = line.strip().split(',')
+                # print raw
+                # print c_cols["eHIntS Appointment Id"]
                 aid = raw[c_cols["eHIntS Appointment Id"]]
+                # print aid
                 pid = aidPidMap[aid] if aid in aidPidMap else 0
                 pastNs  = nsHistory[pid] if pid in nsHistory else -1
                 # if pastNs != -1:
