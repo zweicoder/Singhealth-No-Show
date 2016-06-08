@@ -1,5 +1,5 @@
 # Oracle
-This is a data source for the [Showtime]() repo as a mock database. Uses the trained prediction model to predict No Shows given a `input.csv` file with the proper format and creates an endpoint at `localhost:5000/predict`
+This is a data source for the [Showtime](https://github.com/zweicoder/Showtime-Dashboard) repo as a mock database. Uses the trained prediction model to predict No Shows given a `input.csv` file with the proper format and creates an endpoint at `localhost:5000/predict`
 
 ## Usage
 Put csv files under `csv/` folder, then preprocess data
