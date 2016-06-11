@@ -2,3 +2,4 @@ libsvm
 *.csv
 *.tar.gz
 .ipynb_checkpoints/
+.pyc
