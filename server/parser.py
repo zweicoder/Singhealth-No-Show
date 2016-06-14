@@ -25,12 +25,11 @@ def read_dict_from_file(filename):
         s = f.read()
         return ast.literal_eval(s)
 
-all_means, all_std = read_dict_from_file('preprocess/means.txt'), read_dict_from_file('preprocess/stds.txt')
-tokens = read_dict_from_file('preprocess/mapping.txt')
-
 class Parser:
     def __init__(self, input_file):
         self.input_file = input_file
+        self.all_means = read_dict_from_file('preprocess/means.txt')
+        self.all_std = read_dict_from_file('preprocess/stds.txt')
     # Return list of extracted values
     def extract(self, raw, tokens, length):
         categories = ["Appointment Rescheduled Reason Code", "Specialty Code", "Department Code", "Appointment Type Code",
@@ -65,38 +64,31 @@ class Parser:
 
         # Appointment delay
         apmt_delay = int(float(raw[c_cols["Appointment Waiting Time (days)"]]))
-        apmt_delay = (1.0 * apmt_delay - all_means[
-                      'Appointment Waiting Time (days)']) / all_std['Appointment Waiting Time (days)']
+        apmt_delay = (1.0 * apmt_delay - self.all_means[
+                      'Appointment Waiting Time (days)']) / self.all_std['Appointment Waiting Time (days)']
         features.append(apmt_delay)
 
         # Age
         age = datetime.now().year - \
             datetime.strptime(raw[c_cols["Date of Birth"]], '%d/%m/%y %H:%M').year
         age = age + 100 if age < 0 else age
-        age = (1.0 * age - all_means['Age']) / all_std['Age']
+        age = (1.0 * age - self.all_means['Age']) / self.all_std['Age']
         features.append(age)
 
         # Past NS
         pastNs = int(raw[c_cols["Past NS"]])
         # Remember the negatives if planning to scale this feature
         features.append(pastNs)
-
-        # Postal code -> distance
-
-        # label
         return features
 
     def parse(self):
-        # TODO get all means and s.d.s     
-        
         parsed = []
+        tokens = read_dict_from_file('preprocess/mapping.txt')
         length = len(tokens.keys())
         with open(self.input_file, 'rb') as f:
             for line in f:
                 raw = line.strip().split(',')
-                # Get data from appointment time onwards
                 features = self.extract(raw, tokens, length)
-                # formatted = ','.join(('%s' % (feature) for feature in features))
                 parsed.append(features)
 
         return parsed

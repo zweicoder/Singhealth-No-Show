@@ -5,6 +5,7 @@ from oracle import Oracle
 from datetime import datetime
 from calendar import day_name
 import itertools
+import os
 
 from flask import Flask, jsonify, request
 from flask import request, Response
@@ -12,10 +13,16 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+preprocessed = all(os.path.isfile(path) for path in ['preprocess/mapping.txt','preprocess/means.txt','preprocess/stds.txt'])
+if not preprocessed:
+    print 'Data not preprocessed, preprocessing data for feature scaling...'
+    import preprocess
 
 filename = 'input.csv'
 predictor = Oracle(filename)
 threshold = 0.75 #  or 0.75
+
+
 @app.route('/predict', methods=['GET'])
 def getPredictions():
     with open(filename) as f:
@@ -52,7 +59,6 @@ def getPredictions():
     return 'ERROR'
 
 def dumpResults(results):
-    import os
     directory = 'results'
     if not os.path.exists(directory):
         os.makedirs(directory)
